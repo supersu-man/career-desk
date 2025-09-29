@@ -1,0 +1,16 @@
+[
+    {
+        "id": "ncr",
+        "companyName": "NCR Atleos",
+        "type": "myworkday",
+        "endpoint": "https://ncratleos.wd1.myworkdayjobs.com/wday/cxs/ncratleos/ext_apacatleos/jobs",
+        "site": "https://ncratleos.wd1.myworkdayjobs.com/ext_apacatleos"
+    },
+    {
+        "id": "verizon",
+        "companyName": "Verizon",
+        "type": "verizon",
+        "endpoint": "https://mycareer.verizon.com/career-paths/technology/technology-solutions/",
+        "site": "https://mycareer.verizon.com/career-paths/technology/technology-solutions/"
+    }
+]

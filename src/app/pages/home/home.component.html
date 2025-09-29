@@ -1,0 +1,67 @@
+<div class="d-flex h-100">
+    <nav class="d-flex flex-column border-end gap-2 p-3" style="width: 260px;">
+        <div class="fs-4 text-center mb-4">
+            <img src="assets/favicon.ico" width="24">
+            Career Desk
+        </div>
+        <div class="d-flex align-items-center secondary-container rounded-pill gap-2 px-2 py-1" role="button">
+            <span class="material-symbols-rounded fs-5">
+                home
+            </span>
+            <div>Home</div>
+        </div>
+        <div class="d-flex align-items-center rounded-pill gap-2 px-2 py-1" role="button">
+            <span class="material-symbols-rounded fs-5">
+                bookmark
+            </span>
+            <div>Saved Jobs</div>
+        </div>
+    </nav>
+    <div class="d-flex flex-column w-100 p-3 overflow-auto">
+
+        <div class="d-flex align-items-center gap-2" [formGroup]="searchForm">
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Search</mat-label>
+                <input matInput type="email" formControlName="query" />
+            </mat-form-field>
+
+            <mat-form-field >
+                <mat-label>Company</mat-label>
+                <mat-select formControlName="companyId">
+                    @for (company of companies; track company) {
+                    <mat-option [value]="company.id">{{company.companyName}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+
+            <button style="margin-bottom: 24px;" matButton="filled" (click)="fetch()">Fetch</button>
+
+        </div>
+
+        <div class="grid-container">
+
+            @for (job of data; track $index) {
+            <div class="card rounded-4 p-3">
+                <div>{{job.title}}</div>
+                <div class="d-flex text-muted align-items-center gap-2 small">
+                    <span class="material-symbols-rounded fs-6">location_on</span>
+                    <div>{{job.location}}</div>
+                </div>
+                <div class="d-flex text-muted align-items-center gap-2 small">
+                    <span class="material-symbols-rounded fs-6">schedule</span>
+                    <div>{{job.postedOn}}</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="text-muted small">Tech Innovators Inc.</div>
+                    <button matButton="tonal">Apply</button>
+                </div>
+
+            </div>
+            }
+
+
+        </div>
+
+
+    </div>
+</div>

@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "outDir": "build",
-    "resolveJsonModule": false,
+    "resolveJsonModule": true,
   },
   "files": [],
   "include": ["src/electron"]
