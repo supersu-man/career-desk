@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { getAppUrl, getAssetUrl, resolveElectronPath } from './utility';
 import axios from 'axios';
 import comapnies from './companies.json';
@@ -79,4 +79,10 @@ ipcMain.handle('fetch-jobs', async (_, companyId, options) => {
   if (!scraper) throw new Error("No scraper for this type");
 
   return await scraper(company, options);
+});
+
+ipcMain.on('open-url', (event, url) => {
+  if (url) {
+    shell.openExternal(url);
+  }
 });

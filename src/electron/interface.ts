@@ -17,6 +17,7 @@ export interface JobPosting {
   location?: string;
   department?: string;
   postedOn?: string;
+  url: string;
 }
 
 export type ScraperFn = (company: any, options: ScraperOptions) => Promise<JobPosting[]>;

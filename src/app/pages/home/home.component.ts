@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Company, JobPosting } from '../../utility/interface';
+import { Company, JobPosting, ScraperOptions } from '../../../electron/interface';
 
 @Component({
   selector: 'app-home',
@@ -29,10 +29,19 @@ export class HomeComponent {
   }
 
   fetch = async () => {
-    const companyId = this.searchForm.getRawValue().companyId
+    const form = this.searchForm.getRawValue()
+    const companyId = form.companyId
     if(!companyId) return
-    const data = await this.api.fetchJobs(companyId, {})
+
+    const options: ScraperOptions = {}
+    if(form.query) options.query = form.query
+
+    const data = await this.api.fetchJobs(companyId, options)
     this.data = data
+  }
+
+  apply = (url: string) => {
+    this.api.openUrl(url)
   }
 
   getCompanies = async () => {
