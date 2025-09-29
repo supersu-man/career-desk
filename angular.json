@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "electron-typescript-angular": {
+    "career-desk": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -50,6 +50,8 @@
               "src/assets"
             ],
             "styles": [
+              "src/theme.scss",
+              "src/tokens.scss",
               "src/styles.css"
             ],
             "scripts": []
@@ -71,10 +73,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "electron-typescript-angular:build:production"
+              "buildTarget": "career-desk:build:production"
             },
             "development": {
-              "buildTarget": "electron-typescript-angular:build:development"
+              "buildTarget": "career-desk:build:development"
             }
           },
           "defaultConfiguration": "development"

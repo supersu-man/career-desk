@@ -1,5 +1,5 @@
 {
-  "name": "electron-typescript-angular",
+  "name": "career-desk",
   "version": "0.0.0",
   "main": "build/main.js",
   "scripts": {
@@ -12,30 +12,37 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^20.1.0",
-    "@angular/common": "^20.1.0",
-    "@angular/compiler": "^20.1.0",
-    "@angular/core": "^20.1.0",
-    "@angular/forms": "^20.1.0",
-    "@angular/platform-browser": "^20.1.0",
-    "@angular/platform-browser-dynamic": "^20.1.0",
-    "@angular/router": "^20.1.0",
+    "@angular/animations": "^20.3.2",
+    "@angular/cdk": "^20.2.5",
+    "@angular/common": "^20.3.2",
+    "@angular/compiler": "^20.3.2",
+    "@angular/core": "^20.3.2",
+    "@angular/forms": "^20.3.2",
+    "@angular/material": "^20.2.5",
+    "@angular/platform-browser": "^20.3.2",
+    "@angular/platform-browser-dynamic": "^20.3.2",
+    "@angular/router": "^20.3.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
-    "@angular/build": "^20.1.0",
-    "@angular/cli": "^20.1.0",
-    "@angular/compiler-cli": "^20.1.0",
-    "electron": "^32.0.1",
-    "electron-builder": "^24.13.3",
+    "@angular/build": "^20.3.3",
+    "@angular/cli": "^20.3.3",
+    "@angular/compiler-cli": "^20.3.2",
+    "electron": "^38.2.0",
+    "electron-builder": "^26.0.12",
     "typescript": "~5.8.3"
   },
   "build": {
-    "appId": "dev.sumanth.yourappid",
+    "appId": "dev.sumanth.careerdesk",
+    "productName": "Career Desk",
     "files": [
       "build/"
-    ]
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/browser/assets/icon.png"
+    }
   }
 }

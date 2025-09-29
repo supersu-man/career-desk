@@ -1,4 +1,4 @@
-# electron-typescript-angular
+# career-desk
 
 Really simple ELectron + Typescript + Angular boilerplate.
 

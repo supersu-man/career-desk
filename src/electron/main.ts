@@ -52,7 +52,7 @@ function createUpdateWindow() {
 
 app.on('ready', () => {
   createWindow()
-  createUpdateWindow()
+  // createUpdateWindow()
 });
 
 app.on('window-all-closed', () => {
