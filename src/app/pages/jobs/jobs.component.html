@@ -8,7 +8,7 @@
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Company</mat-label>
             <mat-select formControlName="companyId">
-                @for (company of companies; track company) {
+                @for (company of companies(); track company) {
                 <mat-option [value]="company.id">{{company.companyName}}</mat-option>
                 }
             </mat-select>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="grid-container">
-        @for (job of jobsService.data; track $index) {
+        @for (job of jobsService.jobs(); track $index) {
         <app-job-card [job]="job" (onApply)="jobsService.apply(job.url)"></app-job-card>
         }
     </div>

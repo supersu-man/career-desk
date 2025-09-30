@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JobCardComponent } from '../../components/job-card/job-card.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,20 +20,20 @@ export class JobsComponent {
     query: new FormControl(''),
     companyId: new FormControl('', Validators.required)
   })
-  companies: Company[] = []
+  companies = signal<Company[]>([]);
 
   constructor(public jobsService: JobsService) { }
 
   ngOnInit(): void {
     this.jobsService.getCompanies().then(companies => {
-      this.companies = companies
+      this.companies.set(companies);
     })
   }
 
   fetch = () => {
     if (!this.searchForm.valid) return
-    const form = this.searchForm.getRawValue()
-    this.jobsService.fetchJobs(form.companyId as string, form.query as string)
+    const { companyId, query } = this.searchForm.getRawValue()
+    this.jobsService.fetchJobs(companyId!, query!)
   }
 
 }

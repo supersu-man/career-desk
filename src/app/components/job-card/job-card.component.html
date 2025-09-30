@@ -1,16 +1,16 @@
 <mat-card appearance="filled" class="h-100">
     <mat-card-header>
-        <mat-card-title class="fs-5"> {{job.title}}</mat-card-title>
+        <mat-card-title class="fs-5"> {{job().title}}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
         <div class="d-flex align-items-center gap-2 small">
             <span class="material-symbols-rounded fs-6">location_on</span>
-            <div>{{job.location}}</div>
+            <div>{{job().location}}</div>
         </div>
-        @if (job.postedOn) {
+        @if (job().postedOn) {
             <div class="d-flex align-items-center gap-2 small">
                 <span class="material-symbols-rounded fs-6">schedule</span>
-                <div>{{job.postedOn}}</div>
+                <div>{{job().postedOn}}</div>
             </div>
         }
     </mat-card-content>

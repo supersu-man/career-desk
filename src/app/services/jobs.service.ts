@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { JobPosting, ScraperOptions } from '../../electron/interface';
 
 @Injectable({
@@ -6,16 +6,17 @@ import { JobPosting, ScraperOptions } from '../../electron/interface';
 })
 export class JobsService {
 
-  data: JobPosting[] = []
+  jobs = signal<JobPosting[]>([]);
 
-  api = (window as any).api
+  private api = (window as any).api;
 
   fetchJobs = async (companyId: string, query: string) => {
-    const options: ScraperOptions = {}
-    if (query) options.query = query
+    const options: ScraperOptions = {};
+    if (query) options.query = query;
 
-    const data = await this.api.fetchJobs(companyId, options)
-    this.data = data
+    const data = await this.api.fetchJobs(companyId, options);
+
+    this.jobs.set(data);
   }
 
   apply = (url: string) => {

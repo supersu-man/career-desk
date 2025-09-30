@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { JobPosting } from '../../../electron/interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,6 @@ import { MatCardModule } from '@angular/material/card';
   styles: ``
 })
 export class JobCardComponent {
-  @Input() job!: JobPosting;
-  @Output() onApply = new EventEmitter()
+  job = input.required<JobPosting>()
+  onApply = output<void>();
 }
