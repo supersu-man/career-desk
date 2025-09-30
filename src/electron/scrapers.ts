@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Company, JobPosting, ScraperFn, ScraperOptions } from "./interface";
+import * as cheerio from 'cheerio';
 
 export const scrapers: Record<string, ScraperFn> = {
     myworkday: scrapeWorkday,
@@ -13,7 +14,7 @@ async function scrapeWorkday(company: Company, options: ScraperOptions): Promise
         limit: 20,
         offset: 0
     }
-    if(options.query) body.searchText = options.query
+    if (options.query) body.searchText = options.query
     const headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -28,6 +29,31 @@ async function scrapeWorkday(company: Company, options: ScraperOptions): Promise
     }));
 }
 
-function scrapeVerizon(company: Company, options: ScraperOptions): Promise<JobPosting[]> {
-    return [] as any
+async function scrapeVerizon(company: Company, options: ScraperOptions): Promise<JobPosting[]> {
+    console.log("Scraping Verizon")
+    const headers = {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
+    }
+    const params: any = {}
+    if (options.query) params.search = options.query
+    const response = await axios.get("https://mycareer.verizon.com/jobs/", { headers, params })
+    const $ = cheerio.load(response.data)
+
+    const jobs: JobPosting[] = []
+
+    $('#js-job-search-results .card-job').each((_, el) => {
+        const anchor = $(el).find('h3.card-title > a');
+        const title = anchor.text().trim();
+        const link = company.site + (anchor.attr('href') ?? '');
+
+        const jobmeta = $(el).find('ul.job-meta > li').first().text().trim();
+
+        jobs.push({
+            title,
+            location: jobmeta,
+            url: link,
+        });
+    });
+    return jobs
 }

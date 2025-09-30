@@ -47,10 +47,12 @@
                     <span class="material-symbols-rounded fs-6">location_on</span>
                     <div>{{job.location}}</div>
                 </div>
-                <div class="d-flex text-muted align-items-center gap-2 small">
-                    <span class="material-symbols-rounded fs-6">schedule</span>
-                    <div>{{job.postedOn}}</div>
-                </div>
+                @if (job.postedOn) {
+                    <div class="d-flex text-muted align-items-center gap-2 small">
+                        <span class="material-symbols-rounded fs-6">schedule</span>
+                        <div>{{job.postedOn}}</div>
+                    </div>
+                }
                 <div class="d-flex justify-content-between align-items-center mt-3">
                     <div class="text-muted small">Tech Innovators Inc.</div>
                     <button matButton="tonal" (click)="apply(job.url)">Apply</button>
