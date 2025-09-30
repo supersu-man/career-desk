@@ -1,6 +1,5 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { getAppUrl, getAssetUrl, resolveElectronPath } from './utility';
-import axios from 'axios';
 import comapnies from './companies.json';
 import { scrapers } from './scrapers';
 
@@ -10,7 +9,7 @@ let updateWindow: Electron.BrowserWindow;
 function createWindow() {
   mainWindow = new BrowserWindow({
     height: 600,
-    width: 800,
+    width: 1200,
     icon: getAssetUrl('favicon.ico'),
     webPreferences: {
       preload: resolveElectronPath('preload.js')
@@ -18,7 +17,7 @@ function createWindow() {
   });
   mainWindow.removeMenu()
 
-  const route = getAppUrl()
+  const route = getAppUrl('jobs')
 
   mainWindow.loadURL(route)
 

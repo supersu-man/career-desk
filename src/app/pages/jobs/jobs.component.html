@@ -1,0 +1,26 @@
+<div class="d-flex flex-column w-100 p-3 overflow-auto">
+
+    <div class="d-flex align-items-center gap-2" [formGroup]="searchForm">
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Search</mat-label>
+            <input matInput type="email" formControlName="query" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Company</mat-label>
+            <mat-select formControlName="companyId">
+                @for (company of companies; track company) {
+                <mat-option [value]="company.id">{{company.companyName}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <button style="margin-bottom: 24px;" matButton="filled" (click)="fetch()">Fetch</button>
+    </div>
+
+    <div class="grid-container">
+        @for (job of jobsService.data; track $index) {
+        <app-job-card [job]="job" (onApply)="jobsService.apply(job.url)"></app-job-card>
+        }
+    </div>
+
+
+</div>

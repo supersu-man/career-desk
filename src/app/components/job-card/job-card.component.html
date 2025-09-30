@@ -1,0 +1,20 @@
+<mat-card appearance="filled" class="h-100">
+    <mat-card-header>
+        <mat-card-title class="fs-5"> {{job.title}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="d-flex align-items-center gap-2 small">
+            <span class="material-symbols-rounded fs-6">location_on</span>
+            <div>{{job.location}}</div>
+        </div>
+        @if (job.postedOn) {
+            <div class="d-flex align-items-center gap-2 small">
+                <span class="material-symbols-rounded fs-6">schedule</span>
+                <div>{{job.postedOn}}</div>
+            </div>
+        }
+    </mat-card-content>
+    <mat-card-actions align="end" class="mt-auto">
+        <button matButton="filled" (click)="onApply.emit()">Apply</button>
+    </mat-card-actions>
+</mat-card>
