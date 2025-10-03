@@ -1,17 +1,26 @@
 <mat-card appearance="filled" class="h-100">
-    <mat-card-header>
+    <mat-card-header class="justify-content-between">
         <mat-card-title class="fs-5"> {{job().title}}</mat-card-title>
+        @if (job().saved) {
+            <span class="material-symbols-rounded" role="button" (click)="toggleSave.emit()">bookmark_added</span>
+        } @else {
+            <span class="material-symbols-rounded" role="button" (click)="toggleSave.emit()">bookmark</span>
+        }
     </mat-card-header>
     <mat-card-content>
+        <div class="d-flex align-items-center gap-2 small">
+            <span class="material-symbols-rounded fs-6">corporate_fare</span>
+            <div>{{job().company}}</div>
+        </div>
         <div class="d-flex align-items-center gap-2 small">
             <span class="material-symbols-rounded fs-6">location_on</span>
             <div>{{job().location}}</div>
         </div>
         @if (job().postedOn) {
-            <div class="d-flex align-items-center gap-2 small">
-                <span class="material-symbols-rounded fs-6">schedule</span>
-                <div>{{job().postedOn}}</div>
-            </div>
+        <div class="d-flex align-items-center gap-2 small">
+            <span class="material-symbols-rounded fs-6">schedule</span>
+            <div>{{job().postedOn}}</div>
+        </div>
         }
     </mat-card-content>
     <mat-card-actions align="end" class="mt-auto">

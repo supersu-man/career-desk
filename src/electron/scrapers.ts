@@ -25,7 +25,9 @@ async function scrapeWorkday(company: Company, options: ScraperOptions): Promise
         title: job.title,
         location: job.locationsText,
         postedOn: job.postedOn,
-        url: company.site + job.externalPath
+        url: company.site + job.externalPath,
+        saved: false,
+        company: company.companyName
     }));
 }
 
@@ -53,6 +55,8 @@ async function scrapeVerizon(company: Company, options: ScraperOptions): Promise
             title,
             location: jobmeta,
             url: link,
+            saved: false,
+            company: company.companyName
         });
     });
     return jobs

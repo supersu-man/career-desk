@@ -1,6 +1,6 @@
-<div class="d-flex flex-column w-100 p-3 overflow-auto">
+<div class="d-flex flex-column w-100 h-100 overflow-auto p-3">
 
-    <div class="d-flex align-items-center gap-2" [formGroup]="searchForm">
+    <div class="d-flex align-items-center gap-2" [formGroup]="jobsService.searchForm">
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Search</mat-label>
             <input matInput type="email" formControlName="query" />
@@ -16,11 +16,18 @@
         <button style="margin-bottom: 24px;" matButton="filled" (click)="fetch()">Fetch</button>
     </div>
 
+    @if(loader()) {
+    <div class="d-flex flex-grow-1 align-items-center justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    } @else {
     <div class="grid-container">
         @for (job of jobsService.jobs(); track $index) {
-        <app-job-card [job]="job" (onApply)="jobsService.apply(job.url)"></app-job-card>
+        <app-job-card [job]="job" (onApply)="apply(job.url)" (toggleSave)="toggleSave(job)"></app-job-card>
         }
     </div>
-
+    }
 
 </div>

@@ -3,10 +3,12 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { JobCardComponent } from '../../components/job-card/job-card.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { Company } from '../../../electron/interface';
+import { Company, JobPosting } from '../../../electron/interface';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { JobsService } from '../../services/jobs.service';
+import { StorageService } from '../../services/storage.service';
+import { openUrl } from '../../services/utility';
 
 @Component({
   selector: 'app-jobs',
@@ -16,13 +18,10 @@ import { JobsService } from '../../services/jobs.service';
 })
 export class JobsComponent {
 
-  searchForm = new FormGroup({
-    query: new FormControl(''),
-    companyId: new FormControl('', Validators.required)
-  })
   companies = signal<Company[]>([]);
+  loader = signal<boolean>(false)
 
-  constructor(public jobsService: JobsService) { }
+  constructor(public jobsService: JobsService, private storageService: StorageService) { }
 
   ngOnInit(): void {
     this.jobsService.getCompanies().then(companies => {
@@ -30,10 +29,20 @@ export class JobsComponent {
     })
   }
 
-  fetch = () => {
-    if (!this.searchForm.valid) return
-    const { companyId, query } = this.searchForm.getRawValue()
-    this.jobsService.fetchJobs(companyId!, query!)
+  fetch = async () => {
+    this.loader.set(true)
+    if (!this.jobsService.searchForm.valid) return
+    const { companyId, query } = this.jobsService.searchForm.getRawValue()
+    await this.jobsService.fetchJobs(companyId!, query!)
+    this.loader.set(false)
+  }
+
+  toggleSave = async (job: JobPosting) => {
+    await this.storageService.toggleSaveJob(job);
+  }
+
+  apply = (url: string) => {
+    openUrl(url)
   }
 
 }

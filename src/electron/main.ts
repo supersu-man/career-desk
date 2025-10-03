@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { getAppUrl, getAssetUrl, resolveElectronPath } from './utility';
 import comapnies from './companies.json';
 import { scrapers } from './scrapers';
+import { FileStorage } from './storage';
 
 let mainWindow: Electron.BrowserWindow;
 let updateWindow: Electron.BrowserWindow;
@@ -20,6 +21,7 @@ function createWindow() {
   const route = getAppUrl('jobs')
 
   mainWindow.loadURL(route)
+  // mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', () => {
     mainWindow.destroy()
@@ -68,6 +70,7 @@ app.on('activate', () => {
 
 // Listen for events with ipcMain.handle
 
+const storage = new FileStorage()
 ipcMain.handle('get-companies', () => comapnies);
 
 ipcMain.handle('fetch-jobs', async (_, companyId, options) => {
@@ -77,11 +80,24 @@ ipcMain.handle('fetch-jobs', async (_, companyId, options) => {
   const scraper = scrapers[company.type];
   if (!scraper) throw new Error("No scraper for this type");
 
-  return await scraper(company, options);
+  const jobs = await scraper(company, options);
+  const savedUrls = new Set(storage.getSavedJobs().map(j => j.url));
+  return jobs.map(job => ({
+    ...job,
+    saved: savedUrls.has(job.url),
+  }));
 });
 
 ipcMain.on('open-url', (event, url) => {
   if (url) {
     shell.openExternal(url);
   }
+});
+
+ipcMain.handle('get-saved-jobs', (event) => {
+  return storage.getSavedJobs()
+});
+
+ipcMain.handle('toggle-save-job', (event, company) => {
+  return storage.toggleSaveJob(company)
 });
