@@ -39,7 +39,7 @@ async function scrapeVerizon(company: Company, options: ScraperOptions): Promise
     }
     const params: any = {}
     if (options.query) params.search = options.query
-    const response = await axios.get("https://mycareer.verizon.com/jobs/", { headers, params })
+    const response = await axios.get(company.endpoint, { headers, params })
     const $ = cheerio.load(response.data)
 
     const jobs: JobPosting[] = []

@@ -1,16 +1,30 @@
 [
     {
-        "id": "ncr",
-        "companyName": "NCR Atleos",
+        "id": "ncr-apac",
+        "companyName": "NCR Atleos (APAC)",
         "type": "myworkday",
         "endpoint": "https://ncratleos.wd1.myworkdayjobs.com/wday/cxs/ncratleos/ext_apacatleos/jobs",
         "site": "https://ncratleos.wd1.myworkdayjobs.com/ext_apacatleos"
     },
     {
+        "id": "ncr-emea",
+        "companyName": "NCR Atleos (EMEA)",
+        "type": "myworkday",
+        "endpoint": "https://ncratleos.wd1.myworkdayjobs.com/wday/cxs/ncratleos/ext_non_usalteos/jobs",
+        "site": "https://ncratleos.wd1.myworkdayjobs.com/ext_non_usalteos"
+    },
+    {
+        "id": "ncr-amer",
+        "companyName": "NCR Atleos (AMER)",
+        "type": "myworkday",
+        "endpoint": "https://ncratleos.wd1.myworkdayjobs.com/wday/cxs/ncratleos/ext_atleos_us/jobs",
+        "site": "https://ncratleos.wd1.myworkdayjobs.com/ext_atleos_us"
+    },
+    {
         "id": "verizon",
         "companyName": "Verizon",
         "type": "verizon",
-        "endpoint": "https://mycareer.verizon.com/career-paths/technology/technology-solutions/",
+        "endpoint": "https://mycareer.verizon.com/jobs",
         "site": "https://mycareer.verizon.com"
     }
 ]
