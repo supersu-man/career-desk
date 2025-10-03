@@ -73,6 +73,13 @@ app.on('activate', () => {
 const storage = new FileStorage()
 ipcMain.handle('get-companies', () => comapnies);
 
+ipcMain.handle('get-countries', (_, companyId) => {
+  const company = comapnies.find(c => c.id === companyId);
+  if (!company) throw new Error("Company not found");
+  if (!company.countries) return []
+  return company.countries
+})
+
 ipcMain.handle('fetch-jobs', async (_, companyId, options) => {
   const company = comapnies.find(c => c.id === companyId);
   if (!company) throw new Error("Company not found");

@@ -2,17 +2,28 @@
 
     <div class="d-flex align-items-center gap-2" [formGroup]="jobsService.searchForm">
         <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Search</mat-label>
-            <input matInput type="email" formControlName="query" />
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="w-100">
             <mat-label>Company</mat-label>
-            <mat-select formControlName="companyId">
+            <mat-select formControlName="companyId" (selectionChange)="getCountries()">
                 @for (company of companies(); track company) {
                 <mat-option [value]="company.id">{{company.companyName}}</mat-option>
                 }
             </mat-select>
         </mat-form-field>
+        @if(countries().length>0) {
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Country</mat-label>
+            <mat-select formControlName="country">
+                @for (country of countries(); track country) {
+                <mat-option [value]="country.value">{{country.name}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        }
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Search</mat-label>
+            <input matInput type="email" formControlName="query" />
+        </mat-form-field>
+
         <button style="margin-bottom: 24px;" matButton="filled" (click)="fetch()">Fetch</button>
     </div>
 

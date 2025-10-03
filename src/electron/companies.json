@@ -25,6 +25,16 @@
         "companyName": "Verizon",
         "type": "verizon",
         "endpoint": "https://mycareer.verizon.com/jobs",
-        "site": "https://mycareer.verizon.com"
+        "site": "https://mycareer.verizon.com",
+        "countries": [
+            { "name": "Canada", "value": "Canada" },
+            { "name": "France", "value": "France" },
+            { "name": "India", "value": "India" },
+            { "name": "Ireland", "value": "Ireland" },
+            { "name": "Italy", "value": "Italy" },
+            { "name": "Portugal", "value": "Portugal" },
+            { "name": "Sweden", "value": "Sweden" },
+            { "name": "United States of America", "value": "United States of America" }
+        ]
     }
 ]

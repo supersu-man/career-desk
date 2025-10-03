@@ -9,6 +9,7 @@ export class JobsService {
 
   searchForm = new FormGroup({
     query: new FormControl(''),
+    country: new FormControl(''),
     companyId: new FormControl('', Validators.required)
   })
 
@@ -16,18 +17,18 @@ export class JobsService {
 
   private api = (window as any).api;
 
-  fetchJobs = async (companyId: string, query: string) => {
-    const options: ScraperOptions = {};
-    if (query) options.query = query;
-
+  fetchJobs = async (companyId: string, options: ScraperOptions) => {
     const data = await this.api.fetchJobs(companyId, options);
 
     this.jobs.set(data);
   }
 
   getCompanies = async () => {
-    const companies = await this.api.getCompanies()
-    return companies
+    return await this.api.getCompanies()
+  }
+
+  getCountries = async (id: string) => {
+    return await this.api.getCountries(id)
   }
 
 }

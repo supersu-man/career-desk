@@ -39,6 +39,7 @@ async function scrapeVerizon(company: Company, options: ScraperOptions): Promise
     }
     const params: any = {}
     if (options.query) params.search = options.query
+    if (options.country) params.country = options.country
     const response = await axios.get(company.endpoint, { headers, params })
     const $ = cheerio.load(response.data)
 

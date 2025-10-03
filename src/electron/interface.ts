@@ -10,6 +10,7 @@ export interface ScraperOptions {
   query?: string;
   offset?: number;
   limit?: number;
+  country?: string;
 }
 
 export interface JobPosting {
