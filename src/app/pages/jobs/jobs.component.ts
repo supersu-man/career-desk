@@ -47,7 +47,6 @@ export class JobsComponent {
     form.patchValue({ country: null })
     const id = form.getRawValue().companyId
     if (!form.valid) return
-    console.log(await this.jobsService.getCountries(id!))
     this.countries.set(await this.jobsService.getCountries(id!))
   }
 

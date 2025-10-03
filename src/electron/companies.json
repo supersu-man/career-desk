@@ -27,14 +27,33 @@
         "endpoint": "https://mycareer.verizon.com/jobs",
         "site": "https://mycareer.verizon.com",
         "countries": [
-            { "name": "Canada", "value": "Canada" },
-            { "name": "France", "value": "France" },
-            { "name": "India", "value": "India" },
-            { "name": "Ireland", "value": "Ireland" },
-            { "name": "Italy", "value": "Italy" },
-            { "name": "Portugal", "value": "Portugal" },
-            { "name": "Sweden", "value": "Sweden" },
+            { "name": "Canada", "value": "Canada" }, 
+            { "name": "France", "value": "France" }, 
+            { "name": "India", "value": "India" }, 
+            { "name": "Ireland", "value": "Ireland" }, 
+            { "name": "Italy", "value": "Italy" }, 
+            { "name": "Portugal", "value": "Portugal" }, 
+            { "name": "Sweden", "value": "Sweden" }, 
             { "name": "United States of America", "value": "United States of America" }
+        ]
+    },
+    {
+        "id": "ea",
+        "companyName": "Electronic Arts",
+        "type": "ea",
+        "endpoint": "https://jobs.ea.com/en_US/careers/Home",
+        "site": "https://jobs.ea.com/en_US/careers/Home",
+        "countries": [ 
+            { "value": 10570, "name": "Australia" }, 
+            { "value": 10577, "name": "Canada" }, 
+            { "value": 10579, "name": "China" }, 
+            { "value": 10580, "name": "Colombia" }, 
+            { "value": 10583, "name": "Czechia" }, 
+            { "value": 10585, "name": "Finland" }, 
+            { "value": 10586, "name": "France" }, 
+            { "value": 10587, "name": "Germany" }, 
+            { "value": 10590, "name": "India" }, 
+            { "value": 10591, "name": "Ireland" }
         ]
     }
 ]
