@@ -96,9 +96,20 @@ ipcMain.handle('fetch-jobs', async (_, companyId, options) => {
 });
 
 ipcMain.on('open-url', (event, url) => {
-  if (url) {
-    shell.openExternal(url);
-  }
+  const newWin = new BrowserWindow({
+    height: 600,
+    width: 1200,
+    icon: getAssetUrl('favicon.ico')
+  });
+  newWin.webContents.setUserAgent(
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+  );
+  newWin.removeMenu()
+  newWin.loadURL(url)
+  newWin.webContents.openDevTools()
+  newWin.on('closed', () => {
+    newWin.destroy()
+  });
 });
 
 ipcMain.handle('get-saved-jobs', (event) => {
