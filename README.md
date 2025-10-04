@@ -17,6 +17,12 @@ The app lets you:
 - ⚡ Store everything offline in JSON files (no cloud needed)
 
 
+## 📦 Download
+
+You can download the latest release of Career Desk from the [GitHub Releases page](https://github.com/supersu-man/career-desk/releases).
+
+
+
 ## 🚀 Features
 
 - Scrape job listings from Workday, Verizon, and more
