@@ -50,10 +50,10 @@
               "src/assets"
             ],
             "styles": [
-              "src/theme.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/tokens.scss",
-              "src/styles.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "src/theme.scss",
+              "src/styles.css"
             ],
             "scripts": []
           },
