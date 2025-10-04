@@ -8,7 +8,8 @@
     "electron-start": "npm run electron-build && electron ./build/main.js --dev",
     "angular-build": "ng build --base-href",
     "electron-build": "tsc --project tsconfig.electron.json",
-    "electron-package": "npm run angular-build && npm run electron-build && npx electron-builder --publish never"
+    "electron-package": "npm run angular-build && npm run electron-build && npx electron-builder --publish never",
+    "electron-publish": "npm run angular-build && npm run electron-build && npx electron-builder --publish always"
   },
   "private": true,
   "dependencies": {
@@ -45,6 +46,15 @@
     "win": {
       "target": "nsis",
       "icon": "build/browser/assets/icon.png"
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "supersu-man",
+        "repo": "career-desk",
+        "releaseType": "release",
+        "private": false
+      }
+    ]
   }
 }
