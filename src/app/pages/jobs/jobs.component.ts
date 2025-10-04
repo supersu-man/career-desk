@@ -9,10 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { JobsService } from '../../services/jobs.service';
 import { StorageService } from '../../services/storage.service';
 import { openUrl } from '../../services/utility';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-jobs',
-  imports: [ReactiveFormsModule, JobCardComponent, MatFormFieldModule, MatSelectModule, MatInputModule, MatButtonModule],
+  imports: [ReactiveFormsModule, JobCardComponent, MatFormFieldModule, MatSelectModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule],
   templateUrl: './jobs.component.html',
   styles: ``
 })
