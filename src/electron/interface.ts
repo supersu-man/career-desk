@@ -20,6 +20,7 @@ export interface JobPosting {
   postedOn?: string;
   url: string;
   saved: boolean;
+  applied: boolean;
   company: string
 }
 

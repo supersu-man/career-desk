@@ -1,0 +1,7 @@
+<div class="p-3 h-100 overflow-auto">
+    <div class="grid-container">
+        @for (job of storageService.appliedJobs(); track $index) {
+        <app-job-card [job]="job" (onApply)="applyJob(job)" (toggleSave)="toggleSave(job)"></app-job-card>
+        }
+    </div>
+</div>

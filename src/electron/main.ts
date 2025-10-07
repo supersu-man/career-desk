@@ -89,9 +89,11 @@ ipcMain.handle('fetch-jobs', async (_, companyId, options) => {
 
   const jobs = await scraper(company, options);
   const savedUrls = new Set(storage.getSavedJobs().map(j => j.url));
+  const appliedUrls = new Set(storage.getAppliedJobs().map(j => j.url));
   return jobs.map(job => ({
     ...job,
     saved: savedUrls.has(job.url),
+    applied: appliedUrls.has(job.url)
   }));
 });
 
@@ -106,7 +108,7 @@ ipcMain.on('open-url', (event, url) => {
   );
   newWin.removeMenu()
   newWin.loadURL(url)
-  newWin.webContents.openDevTools()
+  // newWin.webContents.openDevTools()
   newWin.on('closed', () => {
     newWin.destroy()
   });
@@ -116,6 +118,10 @@ ipcMain.handle('get-saved-jobs', (event) => {
   return storage.getSavedJobs()
 });
 
-ipcMain.handle('toggle-save-job', (event, company) => {
-  return storage.toggleSaveJob(company)
+ipcMain.handle('toggle-job', (event, company, type) => {
+  return storage.toggleJob(company, type)
+});
+
+ipcMain.handle('get-applied-jobs', (event) => {
+  return storage.getAppliedJobs()
 });

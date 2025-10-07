@@ -55,8 +55,9 @@ export class JobsComponent {
     await this.storageService.toggleSaveJob(job);
   }
 
-  apply = (url: string) => {
-    openUrl(url)
+  applyJob = async (job: JobPosting) => {
+    openUrl(job.url)
+    await this.storageService.applyJob(job)
   }
 
 }

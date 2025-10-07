@@ -29,6 +29,7 @@ async function scrapeWorkday(company: Company, options: ScraperOptions): Promise
         postedOn: job.postedOn,
         url: company.site + job.externalPath,
         saved: false,
+        applied: false,
         company: company.companyName
     }));
 }
@@ -59,6 +60,7 @@ async function scrapeVerizon(company: Company, options: ScraperOptions): Promise
             location: jobmeta,
             url: link,
             saved: false,
+            applied: false,
             company: company.companyName
         });
     });
@@ -89,6 +91,7 @@ async function scrapeEA(company: Company, options: ScraperOptions): Promise<JobP
             location,
             url: link,
             saved: false,
+            applied: false,
             company: company.companyName
         });
     });
@@ -129,7 +132,8 @@ async function scrapeIBM(company: Company, options: ScraperOptions): Promise<Job
             location: hit._source.field_keyword_19,
             company: company.companyName,
             url: hit._source.url,
-            saved: false
+            saved: false,
+            applied: false,
         })
     })
     return jobs

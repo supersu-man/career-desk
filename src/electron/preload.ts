@@ -9,5 +9,6 @@ contextBridge.exposeInMainWorld('api', {
 
 contextBridge.exposeInMainWorld('storage', {
     getSavedJobs: () => ipcRenderer.invoke('get-saved-jobs'),
-    toggleSaveJob: (company: any) => ipcRenderer.invoke('toggle-save-job', company),
+    getAppliedJobs: () => ipcRenderer.invoke('get-applied-jobs'),
+    toggleJob: (company: any, type: string) => ipcRenderer.invoke('toggle-job', company, type),
 })

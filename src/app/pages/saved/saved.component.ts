@@ -13,16 +13,20 @@ import { openUrl } from '../../services/utility';
 })
 export class SavedComponent implements OnInit {
 
-  constructor(public storageService: StorageService, public jobsService: JobsService) { }
+  constructor(public storageService: StorageService) { }
 
-  ngOnInit(): void {}
-
-  toggleSave = async (job: JobPosting) => {
-    await this.storageService.toggleSaveJob(job);
+  ngOnInit(): void {
+    this.storageService.fetchSavedJobs()
   }
 
-  apply = (url:string) => {
-    openUrl(url)
+  toggleSaveJob = async (job: JobPosting) => {
+    await this.storageService.toggleSaveJob(job)
+    await this.storageService.fetchSavedJobs()
   }
 
+  applyJob = async (job: JobPosting) => {
+    openUrl(job.url)
+    await this.storageService.applyJob(job)
+    await this.storageService.fetchSavedJobs()
+  }
 }
