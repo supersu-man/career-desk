@@ -20,7 +20,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 export class JobsComponent {
 
   companies = signal<Company[]>([]);
-  countries = signal<{ name: string, value: string }[]>([])
   loader = signal<boolean>(false)
 
   constructor(public jobsService: JobsService, private storageService: StorageService) { }
@@ -48,7 +47,7 @@ export class JobsComponent {
     form.patchValue({ country: null })
     const id = form.getRawValue().companyId
     if (!form.valid) return
-    this.countries.set(await this.jobsService.getCountries(id!))
+    this.jobsService.countries.set(await this.jobsService.getCountries(id!))
   }
 
   toggleSave = async (job: JobPosting) => {

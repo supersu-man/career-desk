@@ -12,6 +12,8 @@ export class JobsService {
     country: new FormControl(''),
     companyId: new FormControl('', Validators.required)
   })
+  countries = signal<{ name: string, value: string }[]>([])
+
 
   jobs = signal<JobPosting[]>([]);
 
