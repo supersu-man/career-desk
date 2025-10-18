@@ -199,5 +199,40 @@
             { "name": "Viet Nam", "value": "VNM" }
         ]
 
+    },
+    {
+        "id": "hyland",
+        "companyName": "Hyland",
+        "type": "hyland",
+        "endpoint": "https://careers-hyland.icims.com/jobs/search",
+        "site": "https://careers-hyland.icims.com/jobs",
+        "countries": [
+            { "name": "United States", "value": "12781--" },
+            { "name": "Australia", "value": "12873--" },
+            { "name": "Brazil", "value": "12920--" },
+            { "name": "Brazil-Sao Paulo- SP", "value": "12920--Sao Paulo- SP" },
+            { "name": "Brazil-São Paulo", "value": "12920--São Paulo" },
+            { "name": "Brazil-São Paulo-Sao Paulo", "value": "12920-12946-Sao Paulo" },
+            { "name": "Brazil-São Paulo-São Paulo", "value": "12920-12946-São Paulo" },
+            { "name": "Colombia-Bogota", "value": "13023--Bogota" },
+            { "name": "France-Paris", "value": "13080--Paris" },
+            { "name": "Germany", "value": "13183--" },
+            { "name": "Germany-Berlin", "value": "13183--Berlin" },
+            { "name": "India", "value": "13228--" },
+            { "name": "India-West Bengal-Kolkata", "value": "13228-13263-Kolkata" },
+            { "name": "India-Telangana-Hyderabad", "value": "13228-1225916-Hyderabad" },
+            { "name": "Italy", "value": "13270--" },
+            { "name": "Italy-Rome", "value": "13270--Rome" },
+            { "name": "Mexico", "value": "13400--" },
+            { "name": "Mexico-Various", "value": "13400--Various" },
+            { "name": "Netherlands-Amsterdam", "value": "13445--Amsterdam" },
+            { "name": "Poland", "value": "13501--" },
+            { "name": "Poland-Katowice", "value": "13501--Katowice" },
+            { "name": "Portugal", "value": "13502--" },
+            { "name": "Saudi Arabia", "value": "13537--" },
+            { "name": "Spain-Madrid", "value": "13549--Madrid" },
+            { "name": "United Arab Emirates", "value": "13701--" },
+            { "name": "United Kingdom", "value": "13702--" }
+        ]
     }
 ]
