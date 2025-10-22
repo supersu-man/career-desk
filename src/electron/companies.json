@@ -234,5 +234,27 @@
             { "name": "United Arab Emirates", "value": "13701--" },
             { "name": "United Kingdom", "value": "13702--" }
         ]
+    },
+    {
+        "id": "blue-yonder",
+        "companyName": "Blue Yonder",
+        "type": "myworkday",
+        "endpoint": "https://jda.wd5.myworkdayjobs.com/wday/cxs/jda/JDA_Careers/jobs",
+        "site": "https://jda.wd5.myworkdayjobs.com/en-US/JDA_Careers",
+        "countries": [
+            { "name": "India", "value": "c4f78be1a8f14da0ab49ce1162348a5e" },
+            { "name": "United States of America", "value": "bc33aa3152ec42d4995f4791a106ed09" },
+            { "name": "Mexico", "value": "e2adff9272454660ac4fdb56fc70bb51" },
+            { "name": "United Kingdom", "value": "29247e57dbaf46fb855b224e03170bc7" },
+            { "name": "Germany", "value": "dcc5b7608d8644b3a93716604e78e995" },
+            { "name": "France", "value": "54c5b6971ffb4bf0b116fe7651ec789a" },
+            { "name": "Italy", "value": "8cd04a563fd94da7b06857a79faaf815" },
+            { "name": "Poland", "value": "131d5ac7e3ee4d7b962bdc96e498e412" },
+            { "name": "Australia", "value": "d903bb3fedad45039383f6de334ad4db" },
+            { "name": "Spain", "value": "bd34c524a6a04ae6915f5d96fa086199" },
+            { "name": "Singapore", "value": "80938777cac5440fab50d729f9634969" },
+            { "name": "Taiwan", "value": "a4e08b475d6a4176853c9d1cb9854e02" },
+            { "name": "Japan", "value": "8b705da2becf43cfaccc091da0988ab2" }
+        ]
     }
 ]

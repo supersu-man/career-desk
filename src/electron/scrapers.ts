@@ -12,13 +12,14 @@ export const scrapers: Record<string, ScraperFn> = {
 };
 
 async function scrapeWorkday(company: Company, options: ScraperOptions): Promise<JobPosting[]> {
-    console.log("Scraping workday")
+    console.log(`Scraping ${company.companyName}`)
     const body: any = {
         appliedFacets: {},
         limit: 20,
         offset: 0
     }
     if (options.query) body.searchText = options.query
+    if(options.country) body.appliedFacets.locationCountry = [options.country]
     const headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
