@@ -256,5 +256,13 @@
             { "name": "Taiwan", "value": "a4e08b475d6a4176853c9d1cb9854e02" },
             { "name": "Japan", "value": "8b705da2becf43cfaccc091da0988ab2" }
         ]
+    },
+    {
+        "id": "tcs",
+        "companyName": "TCS",
+        "type": "tcs",
+        "endpoint": "https://ibegin.tcsapps.com/candidate/api/v1/jobs/searchJ",
+        "site": "https://ibegin.tcsapps.com/candidate/jobs"
     }
+
 ]
