@@ -263,6 +263,13 @@
         "type": "tcs",
         "endpoint": "https://ibegin.tcsapps.com/candidate/api/v1/jobs/searchJ",
         "site": "https://ibegin.tcsapps.com/candidate/jobs"
+    },
+    {
+        "id": "accenture",
+        "companyName": "Accenture India",
+        "type": "accenture",
+        "endpoint": "https://www.accenture.com/api/accenture/elastic/findjobs",
+        "site": "https://www.accenture.com/in-en/careers"
     }
 
 ]

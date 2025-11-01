@@ -9,7 +9,8 @@ export const scrapers: Record<string, ScraperFn> = {
     ibm: scrapeIBM,
     amazon: scrapeAmazon,
     hyland: scrapeHyland,
-    tcs: scrapeTCS
+    tcs: scrapeTCS,
+    accenture: scrapeAccenture
 };
 
 async function scrapeWorkday(company: Company, options: ScraperOptions): Promise<JobPosting[]> {
@@ -206,5 +207,23 @@ async function scrapeTCS(company: Company, options: ScraperOptions): Promise<Job
         saved: false,
         applied: false,
         company: company.companyName
+    }))
+}
+
+async function scrapeAccenture(company: Company, options: ScraperOptions): Promise<JobPosting[]> {
+    const headers = {
+        "content-type": "multipart/form-data; boundary=----WebKitFormBoundary22uERZWB7SJBY6Dx",
+        "Referer": "https://www.accenture.com/in-en/careers/jobsearch?jk=software&sb=0"
+    }
+    const body = { startIndex: 0, maxResultSize: 12, jobKeyword: options.query || "", jobCountry: "India", jobLanguage: "en", countrySite: "in-en", sortBy: 0, searchType: "vectorSearch", minScore: 0.6, jobFilters: [] }
+    const response = await axios.post(company.endpoint, body, { headers })
+    const jobs = response.data.data
+    return jobs.map((job: any): JobPosting => ({
+        title: job.title,
+        company: company.companyName,
+        url: `${company.site}/jobdetails?id=${job.guid}`,
+        saved: false,
+        applied: false,
+        location: job.feedCity
     }))
 }
