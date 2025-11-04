@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { JobsService } from '../../services/jobs.service';
 import { StorageService } from '../../services/storage.service';
-import { openUrl } from '../../services/utility';
+import { openUrl, openUrlBrowser } from '../../services/utility';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -57,6 +57,10 @@ export class JobsComponent {
   applyJob = async (job: JobPosting) => {
     openUrl(job.url)
     await this.storageService.applyJob(job)
+  }
+
+  openInBrowser = (url: string) => {
+    openUrlBrowser(url)
   }
 
 }

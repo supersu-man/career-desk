@@ -12,5 +12,6 @@ import { MatCardModule } from '@angular/material/card';
 export class JobCardComponent {
   job = input.required<JobPosting>()
   onApply = output<void>();
+  onOpen = output<void>()
   toggleSave = output<void>();
 }

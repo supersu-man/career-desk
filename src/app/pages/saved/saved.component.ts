@@ -3,7 +3,7 @@ import { JobCardComponent } from "../../components/job-card/job-card.component";
 import { StorageService } from '../../services/storage.service';
 import { JobPosting } from '../../../electron/interface';
 import { JobsService } from '../../services/jobs.service';
-import { openUrl } from '../../services/utility';
+import { openUrl, openUrlBrowser } from '../../services/utility';
 
 @Component({
   selector: 'app-saved',
@@ -28,5 +28,9 @@ export class SavedComponent implements OnInit {
     openUrl(job.url)
     await this.storageService.applyJob(job)
     await this.storageService.fetchSavedJobs()
+  }
+  
+  openInBrowser = (url: string) => {
+    openUrlBrowser(url)
   }
 }

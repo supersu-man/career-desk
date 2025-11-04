@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { JobsService } from '../../services/jobs.service';
 import { StorageService } from '../../services/storage.service';
-import { openUrl } from '../../services/utility';
+import { openUrl, openUrlBrowser } from '../../services/utility';
 import { JobCardComponent } from '../../components/job-card/job-card.component';
 import { JobPosting } from '../../../electron/interface';
 
@@ -18,7 +18,7 @@ export class AppliedComponent {
     this.storageService.fetchAppliedJobs()
   }
 
-  toggleSave = async(job: JobPosting) => {
+  toggleSave = async (job: JobPosting) => {
     await this.storageService.toggleSaveJob(job)
     await this.storageService.fetchAppliedJobs()
   }
@@ -27,5 +27,9 @@ export class AppliedComponent {
     openUrl(job.url)
     await this.storageService.applyJob(job)
     await this.storageService.fetchAppliedJobs()
+  }
+
+  openInBrowser = (url: string) => {
+    openUrlBrowser(url)
   }
 }

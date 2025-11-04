@@ -4,7 +4,8 @@ contextBridge.exposeInMainWorld('api', {
     getCompanies: () => ipcRenderer.invoke('get-companies'),
     getCountries: (companyId: string) => ipcRenderer.invoke('get-countries', companyId),
     fetchJobs: (companyId: string, options: any) => ipcRenderer.invoke('fetch-jobs', companyId, options),
-    openUrl: (url: string) => ipcRenderer.send('open-url', url)
+    openUrl: (url: string) => ipcRenderer.send('open-url', url),
+    openUrlBrowser: (url: string) => ipcRenderer.send('open-url-browser', url)
 })
 
 contextBridge.exposeInMainWorld('storage', {

@@ -114,6 +114,10 @@ ipcMain.on('open-url', (event, url) => {
   });
 });
 
+ipcMain.on('open-url-browser', (event, url: string) => {
+  shell.openExternal(url)
+})
+
 ipcMain.handle('get-saved-jobs', (event) => {
   return storage.getSavedJobs()
 });
