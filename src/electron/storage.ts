@@ -6,11 +6,14 @@ import path from 'path';
 export class FileStorage {
 
     private readonly savedJobsPath: string = path.join(app.getPath("userData"), "saved_jobs.json")
+    private readonly prefsPath: string = path.join(app.getPath("userData"), "search_preferences.json")
 
     private savedJobs: JobPosting[]
+    private prefs: any[]
 
     constructor() {
         this.savedJobs = this.readFile(this.savedJobsPath);
+        this.prefs = this.readFile(this.prefsPath);
     }
 
     private readFile(filePath: string): JobPosting[] {
@@ -67,6 +70,16 @@ export class FileStorage {
 
     getAppliedJobs = () => {
         return this.savedJobs.filter(x => x.applied)
+    }
+
+    getPreferences = () => {
+        return this.prefs
+    }
+
+    async savePreferences(prefs: any[]) {
+        this.prefs = prefs;
+        await this.writeFile(this.prefsPath, this.prefs);
+        return true;
     }
 
 }

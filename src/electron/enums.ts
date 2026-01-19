@@ -7,5 +7,7 @@ export enum IpcChannel {
     GetSavedJobs = 'get-saved-jobs',
     GetAppliedJobs = 'get-applied-jobs',
     ToggleJob = 'toggle-job',
+    GetPreferences = 'get-preferences',
+    SavePreferences = 'save-preferences',
     OnUpdateProgress = 'on-update-progress'
 }

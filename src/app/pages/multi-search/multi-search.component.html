@@ -1,0 +1,63 @@
+<div class="d-flex flex-column w-100 h-100 overflow-auto p-3">
+    <h2 class="mb-4">Multi-Company Search Configuration</h2>
+
+    <div class="d-flex align-items-center gap-2">
+        <mat-form-field appearance="outline" class="flex-grow-1">
+            <mat-label>Global Search Query</mat-label>
+            <input matInput [formControl]="searchQuery" placeholder="e.g. Software Engineer" (keyup.enter)="performBulkSearch()">
+        </mat-form-field>
+        <button mat-flat-button color="primary" (click)="performBulkSearch()" [disabled]="loading()">
+            <div class="d-flex align-items-center gap-2">
+                @if (loading()) {
+                <mat-spinner diameter="20"></mat-spinner>
+                } @else {
+                <span class="material-symbols-rounded">search</span>
+                }
+                <span>Search Companies</span>
+            </div>
+        </button>
+    </div>
+
+    <table class="table table-hover mb-0 align-middle">
+        <thead class="table-light">
+            <tr>
+                <th class="ps-4 py-3 text-uppercase small text-muted fw-semibold"
+                    style="width: 80px;">Enabled</th>
+                <th class="py-3 text-uppercase small text-muted fw-semibold">Company</th>
+                <th class="py-3 text-uppercase small text-muted fw-semibold">Default Country /
+                    Location Filter</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (company of companies(); track company.id) {
+            <tr>
+                <td class="ps-4">
+                    <mat-checkbox [checked]="getPref(company.id).enabled"
+                        (change)="toggleEnabled(company.id)" color="primary">
+                    </mat-checkbox>
+                </td>
+                <td>
+                    <div class="fw-bold">{{ company.companyName }}</div>
+                    <div class="small text-muted text-uppercase">{{ company.type }}</div>
+                </td>
+                <td>
+                    @if (companyCountries()[company.id]?.length) {
+                    <mat-form-field appearance="outline" class="w-100 mb-0 mt-3">
+                        <mat-label>Default Country</mat-label>
+                        <mat-select [value]="getPref(company.id).defaultCountry"
+                            (selectionChange)="onCountryChange(company.id, $event.value)">
+                            <mat-option [value]="null">No default</mat-option>
+                            @for (country of companyCountries()[company.id]; track country.value) {
+                            <mat-option [value]="country.value">{{ country.name }}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                    } @else {
+                    <div class="small text-muted fst-italic">No country filters available</div>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

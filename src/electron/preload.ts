@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { Company, ElectronAPI, JobPosting, ScraperOptions } from './interface';
+import { Company, CompanyPreference, ElectronAPI, JobPosting, ScraperOptions } from './interface';
 
 const api: ElectronAPI = {
     getCompanies: (): Promise<Company[]> => ipcRenderer.invoke(IpcChannel.GetCompanies),
@@ -12,6 +12,8 @@ const api: ElectronAPI = {
     getAppliedJobs: (): Promise<JobPosting[]> => ipcRenderer.invoke(IpcChannel.GetAppliedJobs),
     toggleJob: (job: JobPosting, type: 'save' | 'apply'): Promise<boolean> => ipcRenderer.invoke(IpcChannel.ToggleJob, job, type),
 
+    getPreferences: (): Promise<CompanyPreference[]> => ipcRenderer.invoke(IpcChannel.GetPreferences),
+    savePreferences: (prefs: CompanyPreference[]) => ipcRenderer.send(IpcChannel.SavePreferences, prefs),
     onUpdateProgress: (callback: (percent: number) => void) => ipcRenderer.on(IpcChannel.OnUpdateProgress, (event, percent) => callback(percent)),
 };
 
@@ -26,5 +28,7 @@ enum IpcChannel {
     GetSavedJobs = 'get-saved-jobs',
     GetAppliedJobs = 'get-applied-jobs',
     ToggleJob = 'toggle-job',
+    GetPreferences = 'get-preferences',
+    SavePreferences = 'save-preferences',
     OnUpdateProgress = 'on-update-progress'
 }

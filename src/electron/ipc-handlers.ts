@@ -4,7 +4,8 @@ import companiesJson from './companies.json';
 import { scrapers } from './scrapers';
 import { WindowManager } from './window-manager';
 import { IpcChannel } from './enums';
-import { Company, JobPosting, ScraperOptions } from "./interface";
+import { Company, JobPosting, ScraperOptions, CompanyPreference } from "./interface";
+import countries from './config/countries.json';
 
 const companies = companiesJson as unknown as Company[];
 
@@ -14,8 +15,7 @@ export const setupIpcHandlers = (storage: FileStorage) => {
     ipcMain.handle(IpcChannel.GetCountries, (_, companyId: string) => {
         const company = companies.find(c => c.id === companyId);
         if (!company) throw new Error("Company not found");
-        if (!(company as any).countries) return []
-        return (company as any).countries
+        return (countries as any)[companyId] || (countries as any)[company.type] || []
     })
 
     ipcMain.handle(IpcChannel.FetchJobs, async (_, companyId: string, options: ScraperOptions) => {
@@ -53,5 +53,13 @@ export const setupIpcHandlers = (storage: FileStorage) => {
 
     ipcMain.handle(IpcChannel.GetAppliedJobs, () => {
         return storage.getAppliedJobs()
+    });
+
+    ipcMain.handle(IpcChannel.GetPreferences, () => {
+        return storage.getPreferences()
+    });
+
+    ipcMain.on(IpcChannel.SavePreferences, (_, prefs: CompanyPreference[]) => {
+        storage.savePreferences(prefs)
     });
 }

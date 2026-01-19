@@ -1,0 +1,33 @@
+{
+    "myworkday": {
+        "query": "searchText",
+        "country": "locationCountry"
+    },
+    "verizon": {
+        "query": "search",
+        "country": "country"
+    },
+    "ea": {
+        "query": "path",
+        "country": "8171"
+    },
+    "ibm": {
+        "query": "sm.query",
+        "country": "field_keyword_05"
+    },
+    "amazon": {
+        "query": "base_query",
+        "country": "country"
+    },
+    "hyland": {
+        "query": "searchKeyword",
+        "country": "searchLocation"
+    },
+    "tcs": {
+        "query": "userText"
+    },
+    "accenture": {
+        "query": "jobKeyword",
+        "country": "jobCountry"
+    }
+}

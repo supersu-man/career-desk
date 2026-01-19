@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Company, JobPosting, ScraperFn, ScraperOptions } from "./interface";
 import * as cheerio from 'cheerio';
+import filters from './config/filters.json';
 
 export const scrapers: Record<string, ScraperFn> = {
     myworkday: scrapeWorkday,
@@ -20,8 +21,9 @@ async function scrapeWorkday(company: Company, options: ScraperOptions): Promise
         limit: 20,
         offset: 0
     }
-    if (options.query) body.searchText = options.query
-    if(options.country) body.appliedFacets.locationCountry = [options.country]
+    const config = filters[company.type as keyof typeof filters] as any;
+    if (options.query && config?.query) body[config.query] = options.query
+    if (options.country && config?.country) body.appliedFacets[config.country] = [options.country]
     const headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -46,8 +48,9 @@ async function scrapeVerizon(company: Company, options: ScraperOptions): Promise
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
     }
     const params: any = {}
-    if (options.query) params.search = options.query
-    if (options.country) params.country = options.country
+    const config = filters[company.type as keyof typeof filters] as any;
+    if (options.query && config?.query) params[config.query] = options.query
+    if (options.country && config?.country) params[config.country] = options.country
     const response = await axios.get(company.endpoint, { headers, params })
     const $ = cheerio.load(response.data)
 
@@ -78,9 +81,10 @@ async function scrapeEA(company: Company, options: ScraperOptions): Promise<JobP
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
     }
+    const config = filters[company.type as keyof typeof filters] as any;
     const endpoint = company.endpoint + "/" + (options.query ?? '');
     const params: any = {}
-    if (options.country) params['8171'] = options.country
+    if (options.country && config?.country) params[config.country] = options.country
     const response = await axios.get(endpoint, { headers, params })
     const $ = cheerio.load(response.data)
 
@@ -111,21 +115,27 @@ async function scrapeIBM(company: Company, options: ScraperOptions): Promise<Job
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
     }
     const body: any = { "appId": "careers", "scopes": ["careers2"], "query": { "bool": { "must": [] as any } }, "size": 30, "lang": "zz", "sm": { "query": "", "lang": "zz" }, "_source": ["_id", "title", "url", "description", "language", "entitled", "field_keyword_17", "field_keyword_08", "field_keyword_18", "field_keyword_19"] }
-    if (options.query) {
+    const config = filters[company.type as keyof typeof filters] as any;
+    if (options.query && config?.query) {
+        // Handle nested path sm.query
+        const queryPath = config.query.split('.');
+        let current = body;
+        for (let i = 0; i < queryPath.length - 1; i++) current = current[queryPath[i]];
+        current[queryPath[queryPath.length - 1]] = options.query;
+
         body.query.bool.must.push({
             "simple_query_string": {
                 "query": options.query,
                 "fields": ["keywords^1", "body^1", "url^2", "description^2", "h1s_content^2", "title^3", "field_text_01"]
             }
         })
-        body.sm.query = options.query
     }
-    if (options.country) {
-        body.post_filter = { "term": { "field_keyword_05": options.country } }
+    if (options.country && config?.country) {
+        body.post_filter = { "term": { [config.country]: options.country } }
         body.aggs = {
-            "field_keyword_172": { "filter": { "term": { "field_keyword_05": options.country } } },
-            "field_keyword_083": { "filter": { "term": { "field_keyword_05": options.country } } },
-            "field_keyword_184": { "filter": { "term": { "field_keyword_05": options.country } } }
+            "field_keyword_172": { "filter": { "term": { [config.country]: options.country } } },
+            "field_keyword_083": { "filter": { "term": { [config.country]: options.country } } },
+            "field_keyword_184": { "filter": { "term": { [config.country]: options.country } } }
         }
     }
     const response = await axios.post(company.endpoint, body, { headers })
@@ -150,9 +160,10 @@ async function scrapeAmazon(company: Company, options: ScraperOptions): Promise<
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
     }
+    const config = filters[company.type as keyof typeof filters] as any;
     const params: any = { offset: 0, result_limit: 20, sort: "relevant" }
-    if(options.country) params.country = options.country
-    if(options.query) params.base_query = options.query
+    if (options.country && config?.country) params[config.country] = options.country
+    if (options.query && config?.query) params[config.query] = options.query
     const response = await axios.get(company.endpoint, { params, headers })
     const jobs = response.data.jobs
     return jobs.map((job: any): JobPosting => ({
@@ -173,10 +184,11 @@ async function scrapeHyland(company: Company, options: ScraperOptions): Promise<
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
     }
+    const config = filters[company.type as keyof typeof filters] as any;
     const params: any = { in_iframe: 1 }
-    if(options.country) params.searchLocation = options.country
-    if(options.query) params.searchKeyword = options.query
-    const response = await axios.get( company.endpoint, { params, headers } )
+    if (options.country && config?.country) params[config.country] = options.country
+    if (options.query && config?.query) params[config.query] = options.query
+    const response = await axios.get(company.endpoint, { params, headers })
     const $ = cheerio.load(response.data)
     const jobs: JobPosting[] = []
     $('.iCIMS_JobsTable .row').each((_, el) => {
@@ -197,7 +209,8 @@ async function scrapeHyland(company: Company, options: ScraperOptions): Promise<
 
 async function scrapeTCS(company: Company, options: ScraperOptions): Promise<JobPosting[]> {
     console.log(`Scraping ${company.companyName}`)
-    const body = { "jobCity": null, "jobSkill": null, "pageNumber": "1", "userText": options.query || "", "jobTitleOrder": null, "jobCityOrder": null, "jobFunctionOrder": null, "jobExperienceOrder": null, "applyByOrder": null, "regular": true, "walkin": true }
+    const config = filters[company.type as keyof typeof filters] as any;
+    const body = { "jobCity": null, "jobSkill": null, "pageNumber": "1", [config?.query || 'userText']: options.query || "", "jobTitleOrder": null, "jobCityOrder": null, "jobFunctionOrder": null, "jobExperienceOrder": null, "applyByOrder": null, "regular": true, "walkin": true }
     const response = await axios.post(company.endpoint, body)
     const jobs = response.data.data.jobs
     return jobs.map((job: any): JobPosting => ({
@@ -215,7 +228,8 @@ async function scrapeAccenture(company: Company, options: ScraperOptions): Promi
         "content-type": "multipart/form-data; boundary=----WebKitFormBoundary22uERZWB7SJBY6Dx",
         "Referer": "https://www.accenture.com/in-en/careers/jobsearch?jk=software&sb=0"
     }
-    const body = { startIndex: 0, maxResultSize: 12, jobKeyword: options.query || "", jobCountry: "India", jobLanguage: "en", countrySite: "in-en", sortBy: 0, searchType: "vectorSearch", minScore: 0.6, jobFilters: [] }
+    const config = filters[company.type as keyof typeof filters] as any;
+    const body = { startIndex: 0, maxResultSize: 12, [config?.query || 'jobKeyword']: options.query || "", [config?.country || 'jobCountry']: options.country || "India", jobLanguage: "en", countrySite: "in-en", sortBy: 0, searchType: "vectorSearch", minScore: 0.6, jobFilters: [] }
     const response = await axios.post(company.endpoint, body, { headers })
     const jobs = response.data.data
     return jobs.map((job: any): JobPosting => ({
