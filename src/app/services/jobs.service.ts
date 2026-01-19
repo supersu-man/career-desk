@@ -17,20 +17,18 @@ export class JobsService {
 
   jobs = signal<JobPosting[]>([]);
 
-  private api = (window as any).api;
-
   fetchJobs = async (companyId: string, options: ScraperOptions) => {
-    const data = await this.api.fetchJobs(companyId, options);
+    const data = await window.api.fetchJobs(companyId, options);
 
     this.jobs.set(data);
   }
 
   getCompanies = async () => {
-    return await this.api.getCompanies()
+    return await window.api.getCompanies()
   }
 
   getCountries = async (id: string) => {
-    return await this.api.getCountries(id)
+    return await window.api.getCountries(id)
   }
 
 }

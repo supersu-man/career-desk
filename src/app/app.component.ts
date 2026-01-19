@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ElectronAPI } from '../electron/interface';
 
 @Component({
     selector: 'app-root',
@@ -8,3 +9,9 @@ import { RouterOutlet } from '@angular/router';
     styles: []
 })
 export class AppComponent { }
+
+declare global {
+  interface Window {
+    api: ElectronAPI;
+  }
+}

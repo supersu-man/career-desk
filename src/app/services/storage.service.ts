@@ -7,7 +7,6 @@ import { openUrl } from './utility';
   providedIn: 'root'
 })
 export class StorageService {
-  private storage = (window as any).storage;
 
   savedJobs = signal<JobPosting[]>([]);
   appliedJobs = signal<JobPosting[]>([]);
@@ -15,17 +14,17 @@ export class StorageService {
   jobsService = inject(JobsService)
 
   fetchSavedJobs = async () => {
-    const savedJobs = await this.storage.getSavedJobs();
+    const savedJobs = await window.api.getSavedJobs();
     this.savedJobs.set(savedJobs)
   }
 
   fetchAppliedJobs = async () => {
-    const appliedJobs = await this.storage.getAppliedJobs();
+    const appliedJobs = await window.api.getAppliedJobs();
     this.appliedJobs.set(appliedJobs)
   }
 
   toggleSaveJob = async (job: JobPosting) => {
-    await this.storage.toggleJob(job, "save")
+    await window.api.toggleJob(job, "save")
     this.jobsService.jobs.set(this.jobsService.jobs().map(j =>
       j.url === job.url ? { ...j, saved: !job.saved } : j
     ))
@@ -33,7 +32,7 @@ export class StorageService {
 
   applyJob = async (job: JobPosting) => {
     if (job.applied) return
-    await this.storage.toggleJob(job, "apply")
+    await window.api.toggleJob(job, "apply")
     this.jobsService.jobs.set(this.jobsService.jobs().map(j =>
       j.url === job.url ? { ...j, applied: !job.applied } : j
     ))

@@ -1,2 +1,8 @@
-<p>You can launch a new window with a specific route</p>
-<p>Current route: /update</p>
+<div class="d-flex flex-column align-items-center justify-content-center vh-100 p-3 text-center gap-3">
+    <h1 class="h4 fw-bold mb-2 text-primary">Updating Career Desk</h1>
+    <p class="small text-muted">Installing the latest features and fixes. Please wait while we update your experience.</p>
+    <mat-progress-bar mode="determinate" [value]="progress()"></mat-progress-bar>
+    <div class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2">
+        {{ progress() | number: '1.2-2'}}% Complete
+    </div>
+</div>

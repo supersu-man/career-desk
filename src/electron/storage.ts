@@ -24,36 +24,41 @@ export class FileStorage {
         return [];
     }
 
-    private writeFile(filePath: string, jobs: JobPosting[]) {
+    private async writeFile(filePath: string, jobs: JobPosting[]) {
         try {
-            fs.promises.writeFile(filePath, JSON.stringify(jobs, null, 2));
+            await fs.promises.writeFile(filePath, JSON.stringify(jobs, null, 2));
         } catch (error) {
             console.error("Failed to persist jobs", filePath, error);
         }
     }
 
-    toggleJob(job: JobPosting, type: 'save' | 'apply') {
+    async toggleJob(job: JobPosting, type: 'save' | 'apply') {
         const index = this.savedJobs.findIndex(j => j.url === job.url);
 
         if (index >= 0) {
-            const job = this.savedJobs[index]
-            if (type == "apply" && job.saved) {
-                job.applied = !job.applied
-            } else if (type == "save" && job.applied) {
-                job.saved = !job.saved
-            } else {
+            const existingJob = this.savedJobs[index];
+            if (type === 'save') {
+                existingJob.saved = !existingJob.saved;
+            } else if (type === 'apply') {
+                existingJob.applied = !existingJob.applied;
+            }
+
+            // Remove if no longer saved and no longer applied
+            if (!existingJob.saved && !existingJob.applied) {
                 this.savedJobs.splice(index, 1);
             }
-        }
-
-        else if (type == "apply") {
-            this.savedJobs.push({ ...job, applied: true });
         } else {
-            this.savedJobs.push({ ...job, saved: true })
+            const newJob = { ...job, saved: false, applied: false };
+            if (type === 'save') {
+                newJob.saved = true;
+            } else if (type === 'apply') {
+                newJob.applied = true;
+            }
+            this.savedJobs.push(newJob);
         }
 
-        this.writeFile(this.savedJobsPath, this.savedJobs);
-        return index === -1;
+        await this.writeFile(this.savedJobsPath, this.savedJobs);
+        return true;
     }
 
     getSavedJobs = () => {

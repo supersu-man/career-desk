@@ -25,3 +25,17 @@ export interface JobPosting {
 }
 
 export type ScraperFn = (company: any, options: ScraperOptions) => Promise<JobPosting[]>;
+
+export interface ElectronAPI {
+  getCompanies: () => Promise<Company[]>;
+  getCountries: (companyId: string) => Promise<{name: string, value: string}[]>;
+  fetchJobs: (companyId: string, options: ScraperOptions) => Promise<JobPosting[]>;
+  openUrl: (url: string) => void;
+  openUrlBrowser: (url: string) => void;
+
+  getSavedJobs: () => Promise<JobPosting[]>;
+  getAppliedJobs: () => Promise<JobPosting[]>;
+  toggleJob: (job: JobPosting, type: 'save' | 'apply') => Promise<boolean>;
+
+  onUpdateProgress: (callback: (percent: number) => void) => void;
+}
