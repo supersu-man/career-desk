@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
@@ -9,6 +9,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JobsService } from '../../services/jobs.service';
 import { Company, CompanyPreference } from '../../../electron/interface';
 import { Router } from '@angular/router';
+import { StorageService } from '../../services/storage.service';
+
+class MultiSearch {
+    company!: Company;
+    countries!: { name: string, value: string }[];
+    preferences!: CompanyPreference;
+}
 
 @Component({
     selector: 'app-multi-search',
@@ -26,68 +33,30 @@ import { Router } from '@angular/router';
     templateUrl: './multi-search.component.html',
 })
 export class MultiSearchComponent implements OnInit {
-    companies = signal<Company[]>([]);
-    companyCountries = signal<Record<string, { name: string, value: string }[]>>({});
+
+    jobsService = inject(JobsService)
+    storageService = inject(StorageService)
+    router = inject(Router)
+
     searchQuery = new FormControl('');
     loading = signal(false);
+    multiSearches = signal<MultiSearch[]>([]);
 
-    constructor(public jobsService: JobsService, private router: Router) { }
 
     async ngOnInit() {
         this.loading.set(true);
         const companies = await this.jobsService.getCompanies();
-        this.companies.set(companies);
-
-        await this.jobsService.loadPreferences();
-
-        // Ensure all companies have a preference record
-        const currentPrefs = this.jobsService.preferences();
-        const updatedPrefs: CompanyPreference[] = [...currentPrefs];
-
-        let changed = false;
-        for (const company of companies) {
-            if (!currentPrefs.find(p => p.companyId === company.id)) {
-                updatedPrefs.push({ companyId: company.id, enabled: false });
-                changed = true;
-            }
-        }
-
-        if (changed) {
-            await this.jobsService.savePreferences(updatedPrefs);
-        }
+        const prefs = await this.storageService.loadPreferences();
+        const multiSearches: MultiSearch[] = [];
 
         // Load countries for companies that have them
         for (const company of companies) {
             const countries = await this.jobsService.getCountries(company.id);
-            if (countries && countries.length > 0) {
-                this.companyCountries.update(all => ({ ...all, [company.id]: countries }));
-            }
+            multiSearches.push({ company, countries, preferences: prefs.find(p => p.companyId === company.id) || { companyId: company.id, enabled: false } });
         }
+        this.multiSearches.set(multiSearches);
+        console.log(this.multiSearches());
         this.loading.set(false);
-    }
-
-    getPref(companyId: string): CompanyPreference {
-        return this.jobsService.preferences().find(p => p.companyId === companyId) || { companyId, enabled: false };
-    }
-
-    toggleEnabled(companyId: string) {
-        const prefs = this.jobsService.preferences().map(p => {
-            if (p.companyId === companyId) {
-                return { ...p, enabled: !p.enabled };
-            }
-            return p;
-        });
-        this.jobsService.savePreferences(prefs);
-    }
-
-    onCountryChange(companyId: string, countryValue: string) {
-        const prefs = this.jobsService.preferences().map(p => {
-            if (p.companyId === companyId) {
-                return { ...p, defaultCountry: countryValue };
-            }
-            return p;
-        });
-        this.jobsService.savePreferences(prefs);
     }
 
     async performBulkSearch() {
@@ -95,8 +64,12 @@ export class MultiSearchComponent implements OnInit {
         if (!query) return;
 
         this.loading.set(true);
-        await this.jobsService.bulkFetchJobs(query);
+        const preferences = this.multiSearches().map(m => m.preferences).filter(p => p.enabled);
+        console.log(preferences)
+        
+        await this.storageService.savePreferences(preferences);
+        await this.jobsService.bulkFetchJobs(query, preferences);
         this.loading.set(false);
-        this.router.navigate(['/jobs']); // Navigate to jobs page to see results
+        this.router.navigate(['/jobs']);
     }
 }

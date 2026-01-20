@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { JobPosting } from '../../electron/interface';
+import { CompanyPreference, JobPosting } from '../../electron/interface';
 import { JobsService } from './jobs.service';
 import { openUrl } from './utility';
 
@@ -36,6 +36,15 @@ export class StorageService {
     this.jobsService.jobs.set(this.jobsService.jobs().map(j =>
       j.url === job.url ? { ...j, applied: !job.applied } : j
     ))
+  }
+
+  loadPreferences = async () => {
+    const prefs = await window.api.getPreferences();
+    return prefs || [];
+  }
+
+  savePreferences = async (prefs: CompanyPreference[]) => {
+    window.api.savePreferences(prefs);
   }
 
 }

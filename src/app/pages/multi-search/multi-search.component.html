@@ -6,7 +6,7 @@
             <mat-label>Global Search Query</mat-label>
             <input matInput [formControl]="searchQuery" placeholder="e.g. Software Engineer" (keyup.enter)="performBulkSearch()">
         </mat-form-field>
-        <button mat-flat-button color="primary" (click)="performBulkSearch()" [disabled]="loading()">
+        <button matButton="filled" class="mb-4" style="height: 42px;" (click)="performBulkSearch()" [disabled]="loading() || !searchQuery.value" label="Search Companies" >
             <div class="d-flex align-items-center gap-2">
                 @if (loading()) {
                 <mat-spinner diameter="20"></mat-spinner>
@@ -29,25 +29,22 @@
             </tr>
         </thead>
         <tbody>
-            @for (company of companies(); track company.id) {
+            @for (multi of multiSearches(); track multi.company.id) {
             <tr>
                 <td class="ps-4">
-                    <mat-checkbox [checked]="getPref(company.id).enabled"
-                        (change)="toggleEnabled(company.id)" color="primary">
-                    </mat-checkbox>
+                    <mat-checkbox [(ngModel)]="multi.preferences.enabled" color="primary"></mat-checkbox>
                 </td>
                 <td>
-                    <div class="fw-bold">{{ company.companyName }}</div>
-                    <div class="small text-muted text-uppercase">{{ company.type }}</div>
+                    <div class="fw-bold">{{ multi.company.companyName }}</div>
+                    <div class="small text-muted text-uppercase">{{ multi.company.type }}</div>
                 </td>
                 <td>
-                    @if (companyCountries()[company.id]?.length) {
+                    @if (multi.countries.length) {
                     <mat-form-field appearance="outline" class="w-100 mb-0 mt-3">
                         <mat-label>Default Country</mat-label>
-                        <mat-select [value]="getPref(company.id).defaultCountry"
-                            (selectionChange)="onCountryChange(company.id, $event.value)">
-                            <mat-option [value]="null">No default</mat-option>
-                            @for (country of companyCountries()[company.id]; track country.value) {
+                        <mat-select [(ngModel)]="multi.preferences.defaultCountry">
+                            <mat-option [value]="undefined">No default</mat-option>
+                            @for (country of multi.countries; track country.value) {
                             <mat-option [value]="country.value">{{ country.name }}</mat-option>
                             }
                         </mat-select>
