@@ -66,10 +66,10 @@ export class MultiSearchComponent implements OnInit {
         this.loading.set(true);
         const preferences = this.multiSearches().map(m => m.preferences).filter(p => p.enabled);
         console.log(preferences)
-        
+
         await this.storageService.savePreferences(preferences);
         await this.jobsService.bulkFetchJobs(query, preferences);
         this.loading.set(false);
-        this.router.navigate(['/jobs']);
+        this.router.navigate(['/multi-search-results']);
     }
 }

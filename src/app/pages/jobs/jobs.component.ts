@@ -10,10 +10,14 @@ import { JobsService } from '../../services/jobs.service';
 import { StorageService } from '../../services/storage.service';
 import { openUrl, openUrlBrowser } from '../../services/utility';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+import { computed } from '@angular/core';
 
 @Component({
   selector: 'app-jobs',
-  imports: [ReactiveFormsModule, JobCardComponent, MatFormFieldModule, MatSelectModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, FormsModule, JobCardComponent, MatFormFieldModule, MatSelectModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule, MatCheckboxModule],
   templateUrl: './jobs.component.html',
   styles: ``
 })
@@ -21,6 +25,15 @@ export class JobsComponent {
 
   companies = signal<Company[]>([]);
   loader = signal<boolean>(false)
+  hideApplied = signal<boolean>(false);
+
+  filteredJobs = computed(() => {
+    const jobs = this.jobsService.jobs();
+    if (this.hideApplied()) {
+      return jobs.filter(j => !j.applied);
+    }
+    return jobs;
+  });
 
   constructor(public jobsService: JobsService, private storageService: StorageService) { }
 

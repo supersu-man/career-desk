@@ -1,0 +1,18 @@
+<div class="d-flex flex-column w-100 h-100 overflow-auto p-3">
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <span class="material-symbols-rounded" role="button" (click)="backToSearch()">arrow_back</span>
+        <h2 class="mb-0">Multi-Search Results</h2>
+        <span class="ms-auto text-muted">{{ filteredJobs().length }} jobs found across enabled companies</span>
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+        <mat-checkbox [(ngModel)]="hideApplied" color="primary">Hide Applied Jobs</mat-checkbox>
+    </div>
+
+    <div class="grid-container">
+        @for (job of filteredJobs(); track $index) {
+        <app-job-card [job]="job" (onApply)="applyJob(job)" (toggleSave)="toggleSave(job)"
+            (onOpen)="openInBrowser(job.url)"></app-job-card>
+        }
+    </div>
+</div>
