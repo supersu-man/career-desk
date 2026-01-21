@@ -25,6 +25,7 @@ export const setupIpcHandlers = (storage: FileStorage) => {
         const scraper = scrapers[company.type as keyof typeof scrapers];
         if (!scraper) throw new Error("No scraper for this type");
 
+        console.log(`Scraping ${company.companyName}`)
         const jobs = await scraper(company, options);
         const savedUrls = new Set(storage.getSavedJobs().map(j => j.url));
         const appliedUrls = new Set(storage.getAppliedJobs().map(j => j.url));

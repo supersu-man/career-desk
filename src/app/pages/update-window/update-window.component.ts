@@ -13,7 +13,6 @@ export class UpdateWindowComponent {
 
     constructor() {
         window.api.onUpdateProgress((percent) => {
-            console.log(percent)
             this.progress.set(percent);
         });
     }

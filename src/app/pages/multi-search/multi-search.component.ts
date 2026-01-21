@@ -55,7 +55,6 @@ export class MultiSearchComponent implements OnInit {
             multiSearches.push({ company, countries, preferences: prefs.find(p => p.companyId === company.id) || { companyId: company.id, enabled: false } });
         }
         this.multiSearches.set(multiSearches);
-        console.log(this.multiSearches());
         this.loading.set(false);
     }
 
@@ -65,7 +64,6 @@ export class MultiSearchComponent implements OnInit {
 
         this.loading.set(true);
         const preferences = this.multiSearches().map(m => m.preferences).filter(p => p.enabled);
-        console.log(preferences)
 
         await this.storageService.savePreferences(preferences);
         await this.jobsService.bulkFetchJobs(query, preferences);
