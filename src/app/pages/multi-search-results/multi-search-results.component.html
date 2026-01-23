@@ -11,7 +11,7 @@
 
     <div class="grid-container">
         @for (job of filteredJobs(); track $index) {
-        <app-job-card [job]="job" (onApply)="applyJob(job)" (toggleSave)="toggleSave(job)"
+        <app-job-card [job]="job" (onApply)="jobsService.applyJob(job)" (toggleSave)="jobsService.toggleSaveJob(job)"
             (onOpen)="openInBrowser(job.url)"></app-job-card>
         }
     </div>

@@ -4,10 +4,13 @@ export enum IpcChannel {
     FetchJobs = 'fetch-jobs',
     OpenUrl = 'open-url',
     OpenUrlBrowser = 'open-url-browser',
+    ToggleSaveJob = 'toggle-save-job',
     GetSavedJobs = 'get-saved-jobs',
+    ApplyJob = 'apply-job',
     GetAppliedJobs = 'get-applied-jobs',
-    ToggleJob = 'toggle-job',
+    OnUpdateProgress = 'on-update-progress',
     GetPreferences = 'get-preferences',
     SavePreferences = 'save-preferences',
-    OnUpdateProgress = 'on-update-progress'
+    GetNewPostings = 'get-new-postings',
+    SaveNewPostings = 'save-new-postings',
 }

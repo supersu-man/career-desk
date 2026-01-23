@@ -6,6 +6,7 @@ import { SavedComponent } from './pages/saved/saved.component';
 import { AppliedComponent } from './pages/applied/applied.component';
 import { MultiSearchComponent } from './pages/multi-search/multi-search.component';
 import { MultiSearchResultsComponent } from './pages/multi-search-results/multi-search-results.component';
+import { AutoFetchComponent } from './pages/auto-fetch/auto-fetch.component';
 
 export const routes: Routes = [
     { path: "", redirectTo: "jobs", pathMatch: "full" },
@@ -14,6 +15,7 @@ export const routes: Routes = [
             { path: "jobs", component: JobsComponent },
             { path: "multi-search", component: MultiSearchComponent },
             { path: "multi-search-results", component: MultiSearchResultsComponent },
+            { path: "auto-fetch", component: AutoFetchComponent },
             { path: "saved", component: SavedComponent },
             { path: "applied", component: AppliedComponent }
         ]

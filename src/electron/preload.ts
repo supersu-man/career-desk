@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { Company, CompanyPreference, ElectronAPI, JobPosting, ScraperOptions } from './interface';
+import { Company, ElectronAPI, JobPosting, ScraperOptions, Preferences } from './interface';
 
 const api: ElectronAPI = {
     getCompanies: (): Promise<Company[]> => ipcRenderer.invoke(IpcChannel.GetCompanies),
@@ -8,13 +8,18 @@ const api: ElectronAPI = {
     openUrl: (url: string) => ipcRenderer.send(IpcChannel.OpenUrl, url),
     openUrlBrowser: (url: string) => ipcRenderer.send(IpcChannel.OpenUrlBrowser, url),
 
+    toggleSaveJob: (job: JobPosting): void => ipcRenderer.send(IpcChannel.ToggleSaveJob, job),
     getSavedJobs: (): Promise<JobPosting[]> => ipcRenderer.invoke(IpcChannel.GetSavedJobs),
+    
+    applyJob: (job: JobPosting): void => ipcRenderer.send(IpcChannel.ApplyJob, job),
     getAppliedJobs: (): Promise<JobPosting[]> => ipcRenderer.invoke(IpcChannel.GetAppliedJobs),
-    toggleJob: (job: JobPosting, type: 'save' | 'apply'): Promise<boolean> => ipcRenderer.invoke(IpcChannel.ToggleJob, job, type),
 
-    getPreferences: (): Promise<CompanyPreference[]> => ipcRenderer.invoke(IpcChannel.GetPreferences),
-    savePreferences: (prefs: CompanyPreference[]) => ipcRenderer.send(IpcChannel.SavePreferences, prefs),
     onUpdateProgress: (callback: (percent: number) => void) => ipcRenderer.on(IpcChannel.OnUpdateProgress, (event, percent) => callback(percent)),
+    
+    getPreferences: (): Promise<Preferences> => ipcRenderer.invoke(IpcChannel.GetPreferences),
+    savePreferences: (prefs: Preferences) => ipcRenderer.send(IpcChannel.SavePreferences, prefs),
+    getNewPostings: () => ipcRenderer.invoke(IpcChannel.GetNewPostings),
+    saveNewPostings: (postings: JobPosting[]) => ipcRenderer.send(IpcChannel.SaveNewPostings, postings),
 };
 
 contextBridge.exposeInMainWorld('api',  api)
@@ -25,10 +30,13 @@ enum IpcChannel {
     FetchJobs = 'fetch-jobs',
     OpenUrl = 'open-url',
     OpenUrlBrowser = 'open-url-browser',
+    ToggleSaveJob = 'toggle-save-job',
     GetSavedJobs = 'get-saved-jobs',
+    ApplyJob = 'apply-job',
     GetAppliedJobs = 'get-applied-jobs',
-    ToggleJob = 'toggle-job',
+    OnUpdateProgress = 'on-update-progress',
     GetPreferences = 'get-preferences',
     SavePreferences = 'save-preferences',
-    OnUpdateProgress = 'on-update-progress'
+    GetNewPostings = 'get-new-postings',
+    SaveNewPostings = 'save-new-postings',
 }

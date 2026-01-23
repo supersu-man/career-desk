@@ -1,12 +1,11 @@
 <div class="d-flex flex-column w-100 h-100 overflow-auto p-3">
 
-    <div class="d-flex align-items-center gap-2" [formGroup]="jobsService.searchForm">
-
+    <div class="d-flex align-items-center gap-2">
         <!-- Companies Dropdown -->
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Company</mat-label>
-            <mat-select formControlName="companyId" (selectionChange)="getCountries()">
-                @for (company of companies(); track company) {
+            <mat-select [(ngModel)]="jobsService.searchOptions.companyId" (selectionChange)="getCountries()">
+                @for (company of jobsService.companies(); track company) {
                 <mat-option [value]="company.id">{{company.companyName}}</mat-option>
                 }
             </mat-select>
@@ -16,7 +15,7 @@
         @if(jobsService.countries().length > 0) {
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Country</mat-label>
-            <mat-select formControlName="country">
+            <mat-select [(ngModel)]="jobsService.searchOptions.country">
                 @for (country of jobsService.countries(); track country) {
                 <mat-option [value]="country.value">{{country.name}}</mat-option>
                 }
@@ -27,14 +26,14 @@
         <!-- Search bar -->
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Search</mat-label>
-            <input matInput type="email" formControlName="query" />
+            <input matInput type="text" [(ngModel)]="jobsService.searchOptions.query" />
         </mat-form-field>
 
         <button style="margin-bottom: 24px;" matButton="filled" (click)="fetch()">Fetch</button>
     </div>
 
     <div class="d-flex align-items-center mb-3">
-        <mat-checkbox [(ngModel)]="hideApplied" color="primary">Hide Applied Jobs</mat-checkbox>
+        <mat-checkbox [(ngModel)]="jobsService.hideApplied" color="primary">Hide Applied Jobs</mat-checkbox>
         <span class="ms-auto text-muted small">{{ filteredJobs().length }} jobs found</span>
     </div>
 
@@ -45,7 +44,7 @@
     } @else {
     <div class="grid-container">
         @for (job of filteredJobs(); track $index) {
-        <app-job-card [job]="job" (onApply)="applyJob(job)" (toggleSave)="toggleSave(job)"
+        <app-job-card [job]="job" (onApply)="jobsService.applyJob(job)" (toggleSave)="jobsService.toggleSaveJob(job)"
             (onOpen)="openInBrowser(job.url)"></app-job-card>
         }
     </div>

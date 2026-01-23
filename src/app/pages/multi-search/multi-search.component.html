@@ -4,9 +4,10 @@
     <div class="d-flex align-items-center gap-2">
         <mat-form-field appearance="outline" class="flex-grow-1">
             <mat-label>Global Search Query</mat-label>
-            <input matInput [formControl]="searchQuery" placeholder="e.g. Software Engineer" (keyup.enter)="performBulkSearch()">
+            <input matInput [(ngModel)]="searchQuery" (ngModelChange)="savePreferences()" placeholder="e.g. Software Engineer" (keyup.enter)="performBulkSearch()">
         </mat-form-field>
-        <button matButton="filled" class="mb-4" style="height: 42px;" (click)="performBulkSearch()" [disabled]="loading() || !searchQuery.value" label="Search Companies" >
+        <button matButton="filled" class="mb-4" style="height: 42px;" (click)="performBulkSearch()"
+            [disabled]="loading() || !searchQuery()" label="Search Companies">
             <div class="d-flex align-items-center gap-2">
                 @if (loading()) {
                 <mat-spinner diameter="20"></mat-spinner>
@@ -21,18 +22,16 @@
     <table class="table table-hover mb-0 align-middle">
         <thead class="table-light">
             <tr>
-                <th class="ps-4 py-3 text-uppercase small text-muted fw-semibold"
-                    style="width: 80px;">Enabled</th>
+                <th class="ps-4 py-3 text-uppercase small text-muted fw-semibold" style="width: 80px;">Enabled</th>
                 <th class="py-3 text-uppercase small text-muted fw-semibold">Company</th>
-                <th class="py-3 text-uppercase small text-muted fw-semibold">Default Country /
-                    Location Filter</th>
+                <th class="py-3 text-uppercase small text-muted fw-semibold">Default Country / Location Filter</th>
             </tr>
         </thead>
         <tbody>
             @for (multi of multiSearches(); track multi.company.id) {
             <tr>
                 <td class="ps-4">
-                    <mat-checkbox [(ngModel)]="multi.preferences.enabled" color="primary"></mat-checkbox>
+                    <mat-checkbox [(ngModel)]="multi.preferences.enabled" (ngModelChange)="savePreferences()" color="primary"></mat-checkbox>
                 </td>
                 <td>
                     <div class="fw-bold">{{ multi.company.companyName }}</div>

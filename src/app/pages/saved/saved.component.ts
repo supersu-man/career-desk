@@ -1,6 +1,5 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { JobCardComponent } from "../../components/job-card/job-card.component";
-import { StorageService } from '../../services/storage.service';
 import { JobPosting } from '../../../electron/interface';
 import { JobsService } from '../../services/jobs.service';
 import { openUrl, openUrlBrowser } from '../../services/utility';
@@ -13,21 +12,22 @@ import { openUrl, openUrlBrowser } from '../../services/utility';
 })
 export class SavedComponent implements OnInit {
 
-  constructor(public storageService: StorageService) { }
+  private jobsService = inject(JobsService)
 
-  ngOnInit(): void {
-    this.storageService.fetchSavedJobs()
+  savedJobs = signal<JobPosting[]>([]);
+
+  async ngOnInit() {
+    this.savedJobs.set(await this.jobsService.fetchSavedJobs())
   }
 
   toggleSaveJob = async (job: JobPosting) => {
-    await this.storageService.toggleSaveJob(job)
-    await this.storageService.fetchSavedJobs()
+    await this.jobsService.toggleSaveJob(job)
+    this.savedJobs.set(await this.jobsService.fetchSavedJobs())
   }
 
   applyJob = async (job: JobPosting) => {
-    openUrl(job.url)
-    await this.storageService.applyJob(job)
-    await this.storageService.fetchSavedJobs()
+    await this.jobsService.applyJob(job)
+    this.savedJobs.set(await this.jobsService.fetchSavedJobs())
   }
   
   openInBrowser = (url: string) => {

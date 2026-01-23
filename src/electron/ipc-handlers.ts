@@ -4,7 +4,7 @@ import companiesJson from './companies.json';
 import { scrapers } from './scrapers';
 import { WindowManager } from './window-manager';
 import { IpcChannel } from './enums';
-import { Company, JobPosting, ScraperOptions, CompanyPreference } from "./interface";
+import { Company, JobPosting, ScraperOptions, CompanyPreference, Preferences } from "./interface";
 import countries from './config/countries.json';
 
 const companies = companiesJson as unknown as Company[];
@@ -44,12 +44,16 @@ export const setupIpcHandlers = (storage: FileStorage) => {
         shell.openExternal(url)
     })
 
+    ipcMain.on(IpcChannel.ToggleSaveJob, (_, job: JobPosting) => {
+        storage.toggleSaveJob(job)
+    });
+
     ipcMain.handle(IpcChannel.GetSavedJobs, () => {
         return storage.getSavedJobs()
     });
 
-    ipcMain.handle(IpcChannel.ToggleJob, (_, job: JobPosting, type: 'save' | 'apply') => {
-        return storage.toggleJob(job, type)
+    ipcMain.on(IpcChannel.ApplyJob, (_, job: JobPosting) => {
+        storage.applyJob(job)
     });
 
     ipcMain.handle(IpcChannel.GetAppliedJobs, () => {
@@ -60,7 +64,15 @@ export const setupIpcHandlers = (storage: FileStorage) => {
         return storage.getPreferences()
     });
 
-    ipcMain.on(IpcChannel.SavePreferences, (_, prefs: CompanyPreference[]) => {
+    ipcMain.on(IpcChannel.SavePreferences, (_, prefs: Preferences) => {
         storage.savePreferences(prefs)
+    });
+
+    ipcMain.handle(IpcChannel.GetNewPostings, () => {
+        return storage.getNewPostings()
+    });
+
+    ipcMain.on(IpcChannel.SaveNewPostings, (_, postings: JobPosting[]) => {
+        storage.saveNewPostings(postings)
     });
 }

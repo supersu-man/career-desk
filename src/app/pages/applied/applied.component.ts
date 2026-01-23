@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { JobsService } from '../../services/jobs.service';
-import { StorageService } from '../../services/storage.service';
 import { openUrl, openUrlBrowser } from '../../services/utility';
 import { JobCardComponent } from '../../components/job-card/job-card.component';
 import { JobPosting } from '../../../electron/interface';
@@ -12,21 +11,23 @@ import { JobPosting } from '../../../electron/interface';
   styles: ``
 })
 export class AppliedComponent {
-  constructor(public storageService: StorageService) { }
+  
+  private jobService = inject(JobsService)
 
-  ngOnInit(): void {
-    this.storageService.fetchAppliedJobs()
-  }
+  appliedJobs = signal<JobPosting[]>([]);
 
-  toggleSave = async (job: JobPosting) => {
-    await this.storageService.toggleSaveJob(job)
-    await this.storageService.fetchAppliedJobs()
+  async ngOnInit() {
+    this.appliedJobs.set(await this.jobService.fetchAppliedJobs())
   }
 
   applyJob = async (job: JobPosting) => {
-    openUrl(job.url)
-    await this.storageService.applyJob(job)
-    await this.storageService.fetchAppliedJobs()
+    await this.jobService.applyJob(job)
+    this.appliedJobs.set(await this.jobService.fetchAppliedJobs())
+  }
+
+  toggleSaveJob = async (job: JobPosting) => {
+    await this.jobService.toggleSaveJob(job)
+    this.appliedJobs.set(await this.jobService.fetchAppliedJobs())
   }
 
   openInBrowser = (url: string) => {

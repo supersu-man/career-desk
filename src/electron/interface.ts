@@ -6,10 +6,21 @@ export interface Company {
   site: string;
 }
 
+export interface Preferences {
+  searchQuery: string;
+  companyPreferences: CompanyPreference[];
+  autoFetchSettings: AutoFetchSettings;
+}
+
 export interface CompanyPreference {
   companyId: string;
   enabled: boolean;
   defaultCountry?: string;
+}
+
+export interface AutoFetchSettings {
+  enabled: boolean;
+  interval: 30 | 60 | 360; // minutes
 }
 
 export interface ScraperOptions {
@@ -39,12 +50,16 @@ export interface ElectronAPI {
   openUrl: (url: string) => void;
   openUrlBrowser: (url: string) => void;
 
+  toggleSaveJob: (job: JobPosting) => void;
   getSavedJobs: () => Promise<JobPosting[]>;
+  applyJob: (job: JobPosting) => void;
   getAppliedJobs: () => Promise<JobPosting[]>;
-  toggleJob: (job: JobPosting, type: 'save' | 'apply') => Promise<boolean>;
-
-  getPreferences: () => Promise<CompanyPreference[]>;
-  savePreferences: (prefs: CompanyPreference[]) => void;
-
+  
   onUpdateProgress: (callback: (percent: number) => void) => void;
+  
+  getPreferences: () => Promise<Preferences>;
+  savePreferences: (prefs: Preferences) => void;
+
+  getNewPostings: () => Promise<JobPosting[]>;
+  saveNewPostings: (postings: JobPosting[]) => void;
 }
