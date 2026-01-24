@@ -14,10 +14,11 @@ export class AppComponent {
 
   ngOnInit() {
     this.jobsService.fetchCompanies();
-    // this.jobsService.fetchPreferences();
-    // if (this.jobsService.preferences()?.autoFetchSettings?.enabled) {
-    //   this.jobsService.startAutoFetch();
-    // }
+    this.jobsService.fetchPreferences().then(prefs => {
+      if (prefs.autoFetchSettings.enabled) {
+        this.jobsService.startAutoFetch();
+      }
+    });
   }
 }
 

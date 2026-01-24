@@ -40,6 +40,11 @@ export class AutoFetchComponent {
             ...current,
             autoFetchSettings: { ...current.autoFetchSettings, enabled }
         });
+        if (enabled) {
+            this.jobsService.startAutoFetch();
+        } else {
+            this.jobsService.stopAutoFetch();
+        }
     }
 
     async onIntervalChange(interval: 30 | 60 | 360) {

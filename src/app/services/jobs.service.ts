@@ -16,7 +16,7 @@ export class JobsService {
     companyId: ''
   }
   hideApplied = signal<boolean>(false)
-  
+
   jobs = signal<JobPosting[]>([]);
   multiSearchJobs = signal<JobPosting[]>([]);
   newJobs = signal<JobPosting[]>([]);
@@ -97,14 +97,15 @@ export class JobsService {
     ))
   }
 
-  startAutoFetch = () => {
+  startAutoFetch = async () => {
     this.stopAutoFetch();
-    // const settings = this.preferences().autoFetchSettings;
-    // if (!settings?.enabled) return;
+    const settings = await this.fetchPreferences();
+    if (!settings?.autoFetchSettings?.enabled) return;
+    if (settings.companyPreferences.filter(p => p.enabled).length === 0) return;
 
-    // const intervalMs = settings.interval * 60 * 1000;
-    // this.autoFetchTimer = setInterval(() => this.performAutoFetch(), intervalMs);
-    // console.log(`Auto-fetch started with interval: ${settings.interval} min`);
+    const intervalMs = settings.autoFetchSettings.interval * 60 * 1000;
+    this.autoFetchTimer = setInterval(() => this.performAutoFetch(settings.searchQuery, settings.companyPreferences.filter(p => p.enabled)), intervalMs);
+    console.log(`Auto-fetch started with interval: ${settings.autoFetchSettings.interval} min`);
   }
 
   stopAutoFetch = () => {
@@ -115,17 +116,10 @@ export class JobsService {
     }
   }
 
-  private performAutoFetch = async () => {
-    // console.log('Performing auto-fetch...');
-    // const prefs = this.preferences();
-    // if (!prefs.companyPreferences) return;
-
-    // const enabledPrefs = prefs.companyPreferences.filter(p => p.enabled);
-    // if (enabledPrefs.length === 0) return;
-
-    // const query = prefs.searchQuery || 'Software Engineer';
-    // const allJobs = await this.bulkFetchJobs(query, enabledPrefs);
-    // await this.processNewJobs(allJobs);
+  private performAutoFetch = async (query: string, enabledPrefs: CompanyPreference[]) => {
+    console.log('Performing auto-fetch...');
+    const allJobs = await this.bulkFetchJobs(query, enabledPrefs);
+    await this.processNewJobs(allJobs);
   }
 
   private processNewJobs = async (fetchedJobs: JobPosting[]) => {
@@ -135,7 +129,7 @@ export class JobsService {
     if (newlyFound.length > 0) {
       const currentNew = await window.api.getNewPostings();
       const updatedNew = [...newlyFound, ...currentNew];
-      await window.api.saveNewPostings(updatedNew);
+      window.api.saveNewPostings(updatedNew);
       this.newJobs.set(updatedNew);
 
       this.notifyUser(newlyFound.length);
